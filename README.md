@@ -40,7 +40,7 @@ npm test
 Expected result:
 
 ```text
-6 specs, 0 failures
+7 specs, 0 failures
 ```
 
 ## Project Structure
