@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Friend Search</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        color: #1f2937;
+      }
+
+      .container {
+        width: min(500px, 90%);
+        padding: 32px;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      }
+
+      h1 {
+        margin-top: 0;
+        margin-bottom: 8px;
+      }
+
+      .description {
+        margin-bottom: 24px;
+        color: #6b7280;
+      }
+
+      .search-form {
+        display: flex;
+        gap: 10px;
+      }
+
+      input {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 16px;
+      }
+
+      button {
+        padding: 12px 20px;
+        border: 0;
+        border-radius: 6px;
+        background: #2563eb;
+        color: #ffffff;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      button:hover {
+        background: #1d4ed8;
+      }
+
+      #results {
+        margin-top: 24px;
+      }
+
+      .friend {
+        padding: 12px;
+        margin-bottom: 8px;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+      }
+
+      .message {
+        color: #6b7280;
+      }
+
+      .error {
+        color: #dc2626;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="container">
+      <h1>Friend Search</h1>
+
+      <p class="description">Search for friends by name.</p>
+
+      <form class="search-form" id="searchForm">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Enter a name"
+          aria-label="Friend name"
+        />
+
+        <button type="submit">Search</button>
+      </form>
+
+      <section id="results" aria-live="polite"></section>
+    </main>
+
+    <script>
+      const friends = [
+        { id: 1, name: "Ahmed Ali" },
+        { id: 2, name: "Mohamed Hassan" },
+        { id: 3, name: "Sara Mohamed" },
+        { id: 4, name: "Ahmed Hassan" },
+      ];
+
+      const searchForm = document.getElementById("searchForm");
+      const searchInput = document.getElementById("searchInput");
+      const results = document.getElementById("results");
+
+      searchForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const searchTerm = searchInput.value.trim().toLowerCase();
+
+        if (!searchTerm) {
+          results.innerHTML = '<p class="message">Please enter a name.</p>';
+          return;
+        }
+
+        const matches = friends.filter((friend) =>
+          friend.name.toLowerCase().includes(searchTerm),
+        );
+
+        if (matches.length === 0) {
+          results.innerHTML = '<p class="message">No friends found.</p>';
+          return;
+        }
+
+        results.innerHTML = matches
+          .map((friend) => `<div class="friend">${friend.name}</div>`)
+          .join("");
+      });
+    </script>
+  </body>
+</html>
