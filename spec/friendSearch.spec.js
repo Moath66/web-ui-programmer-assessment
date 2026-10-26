@@ -35,9 +35,19 @@ describe("searchFriendsByName", () => {
     );
   });
 
+  it("rejects numeric string input", async () => {
+    await expectAsync(searchFriendsByName("123")).toBeRejectedWithError(
+      TypeError,
+      "Search term must be a name.",
+    );
+  });
+
   it("handles rejected Promise", async () => {
+    const failingFetchFriends = () =>
+      Promise.reject(new Error("Failed to retrieve friends."));
+
     await expectAsync(
-      Promise.reject(new Error("Failed to retrieve friends.")),
+      searchFriendsByName("Ahmed", failingFetchFriends),
     ).toBeRejectedWithError("Failed to retrieve friends.");
   });
 });

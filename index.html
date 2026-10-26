@@ -137,6 +137,12 @@
             .map((friend) => `<div class="friend">${friend.name}</div>`)
             .join("");
         } catch (error) {
+          if (error.message === "Search term must be a name.") {
+            results.innerHTML =
+              '<p class="error">إدخال غير صالح، يرجى إدخال اسم.</p>';
+            return;
+          }
+
           results.innerHTML = '<p class="error">حدث خطأ أثناء البحث.</p>';
         }
       });

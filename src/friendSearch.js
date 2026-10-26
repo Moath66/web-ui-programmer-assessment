@@ -7,7 +7,7 @@ const friends = [
 
 const getFriends = () => Promise.resolve(friends);
 
-async function searchFriendsByName(searchTerm) {
+async function searchFriendsByName(searchTerm, fetchFriends = getFriends) {
   if (typeof searchTerm !== "string") {
     throw new TypeError("Search term must be a string.");
   }
@@ -18,7 +18,11 @@ async function searchFriendsByName(searchTerm) {
     return [];
   }
 
-  const friendsList = await getFriends();
+  if (/^\d+$/.test(normalizedSearchTerm)) {
+    throw new TypeError("Search term must be a name.");
+  }
+
+  const friendsList = await fetchFriends();
 
   return friendsList.filter((friend) =>
     friend.name.toLowerCase().includes(normalizedSearchTerm)
