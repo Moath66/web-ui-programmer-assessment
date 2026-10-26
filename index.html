@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Friend Search</title>
+    <title>البحث عن صديق</title>
 
     <style>
       * {
@@ -89,58 +89,56 @@
 
   <body>
     <main class="container">
-      <h1>Friend Search</h1>
+      <h1>البحث عن صديق</h1>
 
-      <p class="description">Search for friends by name.</p>
+      <p class="description">ابحث عن الأصدقاء بالاسم.</p>
 
       <form class="search-form" id="searchForm">
         <input
           type="text"
           id="searchInput"
-          placeholder="Enter a name"
-          aria-label="Friend name"
+          placeholder="أدخل اسمًا"
+          aria-label="اسم الصديق"
         />
 
-        <button type="submit">Search</button>
+        <button type="submit">بحث</button>
       </form>
 
       <section id="results" aria-live="polite"></section>
     </main>
 
-    <script>
-      const friends = [
-        { id: 1, name: "Ahmed Ali" },
-        { id: 2, name: "Mohamed Hassan" },
-        { id: 3, name: "Sara Mohamed" },
-        { id: 4, name: "Ahmed Hassan" },
-      ];
+    <script src="./src/friendSearch.js"></script>
 
+    <script>
       const searchForm = document.getElementById("searchForm");
       const searchInput = document.getElementById("searchInput");
       const results = document.getElementById("results");
 
-      searchForm.addEventListener("submit", (event) => {
+      searchForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const searchTerm = searchInput.value.trim().toLowerCase();
+        const searchTerm = searchInput.value.trim();
 
         if (!searchTerm) {
-          results.innerHTML = '<p class="message">Please enter a name.</p>';
+          results.innerHTML = '<p class="message">يرجى إدخال اسم للبحث.</p>';
           return;
         }
 
-        const matches = friends.filter((friend) =>
-          friend.name.toLowerCase().includes(searchTerm),
-        );
+        try {
+          const matches = await searchFriendsByName(searchTerm);
 
-        if (matches.length === 0) {
-          results.innerHTML = '<p class="message">No friends found.</p>';
-          return;
+          if (matches.length === 0) {
+            results.innerHTML =
+              '<p class="message">لم يتم العثور على أصدقاء.</p>';
+            return;
+          }
+
+          results.innerHTML = matches
+            .map((friend) => `<div class="friend">${friend.name}</div>`)
+            .join("");
+        } catch (error) {
+          results.innerHTML = '<p class="error">حدث خطأ أثناء البحث.</p>';
         }
-
-        results.innerHTML = matches
-          .map((friend) => `<div class="friend">${friend.name}</div>`)
-          .join("");
       });
     </script>
   </body>

@@ -21,10 +21,16 @@ async function searchFriendsByName(searchTerm) {
   const friendsList = await getFriends();
 
   return friendsList.filter((friend) =>
-    friend.name.toLowerCase().includes(normalizedSearchTerm),
+    friend.name.toLowerCase().includes(normalizedSearchTerm)
   );
 }
 
-module.exports = {
-  searchFriendsByName,
-};
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    searchFriendsByName,
+  };
+}
+
+if (typeof window !== "undefined") {
+  window.searchFriendsByName = searchFriendsByName;
+}
